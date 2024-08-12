@@ -1,28 +1,34 @@
 // src/App.js
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deposit, withdraw, purchaseItem } from "./amountSlice";
+import { getPokemons, pokemonStatusSelector, pokemonListSelector } from "./amountSlice";
 
 function App() {
-  const balance = useSelector((state) => state.balance.value);
-  const items = useSelector((state) => state.balance.items);
+  const pokemonStatus = useSelector(pokemonStatusSelector);
+  const pokemonList = useSelector(pokemonListSelector);
+
   const dispatch = useDispatch();
 
   return (
     <div className="App">
-      <h1>Shop Items</h1>
-      <div>
-        {items.map((item) => (
-          <div key={item.name}>
-            <button onClick={() => dispatch(purchaseItem(item.name))}>
-              Buy {item.name} for ${item.cost}
-            </button>
-          </div>
-        ))}
-      </div>
-      <h2>Your Balance: ${balance}</h2>
-      <button onClick={() => dispatch(deposit(100))}>Deposit $100</button>
-      <button onClick={() => dispatch(withdraw(100))}>Withdraw $100</button>
+      <h1>Pokemons</h1>
+
+      <button onClick={() => dispatch(getPokemons())}>Get Pokemons</button>
+
+      <h2>Pokemon Status: {pokemonStatus}</h2>
+      
+      {pokemonStatus === 'rejected' &&
+        (<h3>Error occured when fetching pokemons</h3>)
+      }
+
+      {(pokemonStatus !== 'pending' && pokemonList !== 'rejected') &&
+        (
+          pokemonList.map((item) => (
+            <div key={item.name}>{item.name}</div>
+          ))
+        )
+      }
+      
     </div>
   );
 }

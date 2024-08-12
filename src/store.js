@@ -3,6 +3,6 @@ import balanceReducer from "./amountSlice";
 
 export default configureStore({
   reducer: {
-    balance: balanceReducer,
+    pokemons: balanceReducer,
   },
 });
